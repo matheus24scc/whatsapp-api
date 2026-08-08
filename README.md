@@ -1,221 +1,443 @@
 <div align="center">
 
-# WhatsApp API
+  <img src="https://img.shields.io/badge/WHATSAPP_API-v2.0.0-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="WhatsApp API">
+  <br><br>
 
-**API completa do WhatsApp com dashboard futurista, multi-sessao e envio de mensagens.**
-Envie textos, imagens, videos, audios, localizacoes e enquetes pelo WhatsApp usando uma interface moderna com design neon/glassmorphism. Funciona com qualquer cliente HTTP ou integre direto no seu projeto.
+  <h1>WhatsApp API</h1>
 
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![WhatsApp Web.js](https://img.shields.io/badge/WhatsApp%20Web.js-1.34.7-brightgreen.svg)](https://github.com/nicedoc/whatsapp-web.js)
-[![Socket.IO](https://img.shields.io/badge/Socket.IO-4+-white.svg)](https://socket.io/)
+  <p>
+    <strong>API completa e production-ready para integracao com WhatsApp</strong><br>
+    Multi-sessao · Dashboard futurista · Todos os tipos de mensagem · Tempo real
+  </p>
 
-![WhatsApp API Dashboard](docs/assets/demo.png)
+  <p>
+    <a href="#instalacao">Instalacao</a> ·
+    <a href="#documentacao-da-api">API</a> ·
+    <a href="#exemplos">Exemplos</a> ·
+    <a href="#deploy">Deploy</a> ·
+    <a href="#roadmap">Roadmap</a>
+  </p>
+
+  [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-00a884?style=flat-square)](LICENSE)
+  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](CONTRIBUTING.md)
+  [![Issues](https://img.shields.io/github/issues/matheus24scc/whatsapp-api?style=flat-square)](https://github.com/matheus24scc/whatsapp-api/issues)
+  [![Stars](https://img.shields.io/github/stars/matheus24scc/whatsapp-api?style=flat-square&color=yellow)](https://github.com/matheus24scc/whatsapp-api/stargazers)
 
 </div>
 
-## Why
+---
 
-Integrar com o WhatsApp normalmente requer configuracoes complexas, libraries desatualizadas e dashboards feios. Este projeto resolve isso com:
+## Visao Geral
 
-- **Multi-sessao** — Gerencie varias contas WhatsApp simultaneamente
-- **Dashboard futurista** — Interface com glassmorphism, neon e particulas animadas
-- **Todos os tipos de mensagem** — Texto, imagem, video, audio, localizacao e enquete
-- **Tempo real** — Socket.IO para atualizacoes instantaneas
-- **Resolucao LID** — Compativel com o novo protocolo do WhatsApp
+O WhatsApp API e uma solucao completa para quem precisa integrar WhatsApp em seus sistemas. Diferente de outras bibliotecas que quebram a cada atualizacao, este projeto foi construido pensando em **estabilidade** e **facilidade de uso**.
 
-## Install
+### Por que usar este projeto?
 
-> **Requires:** Node.js 18+ · npm · Chrome/Chromium (para Puppeteer)
+| Feature | Este Projeto | Outros |
+|---------|:------------:|:------:|
+| Multi-sessao | ✅ | ❌ |
+| Dashboard visual | ✅ | ❌ |
+| Envio de midia | ✅ | ⚠️ |
+| Localizacao | ✅ | ❌ |
+| Enquetes | ✅ | ❌ |
+| Tempo real | ✅ | ❌ |
+| Auto-reconnect | ✅ | ⚠️ |
+| LID compat | ✅ | ❌ |
+| Design futurista | ✅ | ❌ |
 
-### Step 1 — Clone e instale dependencias
+### Stack Tecnico
+
+```
+┌─────────────────────────────────────────────────────┐
+│                    FRONTEND                          │
+│  HTML5 · CSS3 (Glassmorphism) · JavaScript ES6+     │
+│  Socket.IO Client · Orbitron Font · Neon Effects    │
+└──────────────────────┬──────────────────────────────┘
+                       │ WebSocket
+┌──────────────────────┴──────────────────────────────┐
+│                    BACKEND                           │
+│  Node.js 18+ · Express 4 · Socket.IO 4              │
+│  whatsapp-web.js 1.34.7 · QRCode · Puppeteer        │
+└──────────────────────┬──────────────────────────────┘
+                       │ WhatsApp Web Protocol
+┌──────────────────────┴──────────────────────────────┐
+│                  WHATSAPP                            │
+│  Chrome Headless · WebSocket · LID Resolution        │
+└─────────────────────────────────────────────────────┘
+```
+
+---
+
+## Instalacao
+
+### Requisitos
+
+- **Node.js** 18 ou superior
+- **npm** 9 ou superior
+- **Chrome/Chromium** (para Puppeteer)
+- **~500MB** de espaco em disco
+
+### Quick Start
 
 ```bash
+# 1. Clone o repositorio
 git clone https://github.com/matheus24scc/whatsapp-api.git
+
+# 2. Entre na pasta
 cd whatsapp-api
+
+# 3. Instale as dependencias
 npm install
-```
 
-### Step 2 — Inicie o servidor
-
-```bash
+# 4. Inicie o servidor
 node server.js
+
+# 5. Abra o dashboard
+# http://localhost:3000
 ```
 
-### Step 3 — Acesse o dashboard
+### Instalacao avancada
 
-Abra **http://localhost:3000** no navegador.
-
-<details><summary><b>Usando PM2 (producao)</b></summary>
+<details>
+<summary><b>Configuracao via variavel de ambiente</b></summary>
 
 ```bash
+# Porta do servidor (default: 3000)
+PORT=3000
+
+# Caminho do Chrome (auto-detect)
+CHROME_PATH=/usr/bin/google-chrome
+
+# Modo debug
+DEBUG=whatsapp-api:*
+```
+
+</details>
+
+<details>
+<summary><b>Docker</b></summary>
+
+```bash
+# Build
+docker build -t whatsapp-api .
+
+# Run
+docker run -d \
+  --name whatsapp-api \
+  -p 3000:3000 \
+  -v ./data:/app/data \
+  whatsapp-api
+```
+
+</details>
+
+<details>
+<summary><b>PM2 (Producao)</b></summary>
+
+```bash
+# Instale o PM2
 npm install -g pm2
+
+# Inicie o servidor
 pm2 start server.js --name whatsapp-api
+
+# Salve a config
 pm2 save
+
+# Configure para iniciar com o sistema
 pm2 startup
 ```
 
 </details>
 
-<details><summary><b>Docker</b></summary>
+---
 
-```bash
-docker build -t whatsapp-api .
-docker run -p 3000:3000 whatsapp-api
+## Dashboard
+
+O dashboard foi projetado com uma estetica **futurista/glassmorphism** incluindo:
+
+- Grid animado no background
+- Particulas flutuantes com cores neon
+- Scanline animada
+- Cards com efeito glass (backdrop-filter blur)
+- Status dots com animacao de pulso
+- Toast notifications
+- Stats em tempo real
+- Design responsivo
+
+```
+┌────────────────────────────────────────────┐
+│  ⬡ SYSTEM ONLINE                          │
+│                                            │
+│     W H A T S A P P   A P I               │
+│     Nexus Control Dashboard v2.0           │
+│  ─────────────────────────────────────     │
+│                                            │
+│  ┌─────────┐ ┌─────────┐ ┌─────────┐      │
+│  │    1    │ │    1    │ │  ONL    │      │
+│  │ Sessoes │ │Conecta. │ │ Status  │      │
+│  └─────────┘ └─────────┘ └─────────┘      │
+│                                            │
+│  ┌─ SESSOES ──────────────────────────┐   │
+│  │  🟢 medico        CONECTADA  [X]  │   │
+│  └────────────────────────────────────┘   │
+│                                            │
+│  ┌─ ENVIAR MENSAGEM ──────────────────┐   │
+│  │  Sessao: [medico          ▼]       │   │
+│  │  Tipo: [Texto][Imagem][Video]...   │   │
+│  │  Numero: [5511999999999      ]     │   │
+│  │  Mensagem: [                    ]  │   │
+│  │  [═══════ TRANSMITIR ═══════]      │   │
+│  └────────────────────────────────────┘   │
+└────────────────────────────────────────────┘
 ```
 
-</details>
+---
 
-## How to use
+## Documentacao da API
 
-### 1. Criar uma sessao
+### Base URL
 
-No dashboard, digite um nome e clique em **+ Criar**. Um QR Code aparecera.
+```
+http://localhost:3000
+```
 
-### 2. Conectar o WhatsApp
+### Endpoints
 
-1. Abra o WhatsApp no celular
-2. Va em **Mais opcoes** > **Aparelhos conectados**
-3. Toque em **Conectar um aparelho**
-4. Escaneie o QR Code
+#### Sessoes
 
-### 3. Enviar mensagens
+| Metodo | Rota | Body | Descricao |
+|--------|------|------|-----------|
+| `GET` | `/api/sessions` | - | Lista todas as sessoes |
+| `POST` | `/api/sessions` | `{"sessionId": "nome"}` | Cria uma sessao |
+| `DELETE` | `/api/sessions/:id` | - | Deleta uma sessao |
 
-Selecione a sessao conectada, escolha o tipo de mensagem, preencha os campos e clique em **TRANSMITIR**.
-
-## API Endpoints
+#### QR Code
 
 | Metodo | Rota | Descricao |
 |--------|------|-----------|
-| `GET` | `/api/sessions` | Listar todas as sessoes |
-| `POST` | `/api/sessions` | Criar sessao `{"sessionId"}` |
-| `GET` | `/api/qrcode/:id` | Obter QR Code |
-| `GET` | `/api/contacts/:sessionId` | Listar contatos |
-| `DELETE` | `/api/sessions/:id` | Deletar sessao |
-| `POST` | `/api/send/text` | Enviar texto |
-| `POST` | `/api/send/image` | Enviar imagem |
-| `POST` | `/api/send/video` | Enviar video |
-| `POST` | `/api/send/audio` | Enviar audio |
-| `POST` | `/api/send/location` | Enviar localizacao |
-| `POST` | `/api/send/poll` | Enviar enquete |
+| `GET` | `/api/qrcode/:id` | Retorna o QR Code em base64 |
 
-### Exemplo com curl
+#### Contatos
+
+| Metodo | Rota | Descricao |
+|--------|------|-----------|
+| `GET` | `/api/contacts/:sessionId` | Lista contatos (max 200) |
+
+#### Envio de Mensagens
+
+| Metodo | Rota | Body |
+|--------|------|------|
+| `POST` | `/api/send/text` | `{"sessionId", "to", "text"}` |
+| `POST` | `/api/send/image` | `{"sessionId", "to", "imageUrl", "caption"}` |
+| `POST` | `/api/send/video` | `{"sessionId", "to", "videoUrl", "caption"}` |
+| `POST` | `/api/send/audio` | `{"sessionId", "to", "audioUrl"}` |
+| `POST` | `/api/send/location` | `{"sessionId", "to", "latitude", "longitude"}` |
+| `POST` | `/api/send/poll` | `{"sessionId", "to", "name", "values"}` |
+
+### Formato do Numero
+
+O numero deve estar no formato internacional sem `+`:
+
+```
+5511999999999    ← Brasil (55 + DDD + numero)
+12025551234      ← EUA (1 + area code + number)
+447911123456     ← UK (44 + number)
+```
+
+---
+
+## Exemplos
+
+### cURL
 
 ```bash
 # Criar sessao
 curl -X POST http://localhost:3000/api/sessions \
   -H "Content-Type: application/json" \
-  -d '{"sessionId":"minha-sessao"}'
+  -d '{"sessionId":"vendas"}'
 
-# Enviar mensagem de texto
+# Enviar texto
 curl -X POST http://localhost:3000/api/send/text \
   -H "Content-Type: application/json" \
-  -d '{"sessionId":"minha-sessao","to":"5511999999999","text":"Ola!"}'
+  -d '{
+    "sessionId": "vendas",
+    "to": "5511999999999",
+    "text": "Ola! Sua compra foi confirmada."
+  }'
 
 # Enviar imagem
 curl -X POST http://localhost:3000/api/send/image \
   -H "Content-Type: application/json" \
-  -d '{"sessionId":"minha-sessao","to":"5511999999999","imageUrl":"https://exemplo.com/foto.jpg","caption":"Legenda"}'
+  -d '{
+    "sessionId": "vendas",
+    "to": "5511999999999",
+    "imageUrl": "https://exemplo.com/produto.jpg",
+    "caption": "Confira nosso novo produto!"
+  }'
 ```
 
-### Exemplo com JavaScript
+### JavaScript (fetch)
 
 ```javascript
-const response = await fetch('http://localhost:3000/api/send/text', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    sessionId: 'minha-sessao',
-    to: '5511999999999',
-    text: 'Mensagem via API!'
-  })
-});
+const API = 'http://localhost:3000';
 
-const result = await response.json();
-console.log(result); // { success: true }
+// Criar sessao
+const createSession = async (name) => {
+  const res = await fetch(`${API}/api/sessions`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sessionId: name })
+  });
+  return res.json();
+};
+
+// Enviar mensagem
+const sendMessage = async (session, to, text) => {
+  const res = await fetch(`${API}/api/send/text`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sessionId: session, to, text })
+  });
+  return res.json();
+};
+
+// Uso
+await createSession('bot');
+await sendMessage('bot', '5511999999999', 'Ola!');
 ```
 
-## Architecture
+### Python (requests)
+
+```python
+import requests
+
+API = 'http://localhost:3000'
+
+# Criar sessao
+requests.post(f'{API}/api/sessions', json={
+    'sessionId': 'bot'
+})
+
+# Enviar mensagem
+requests.post(f'{API}/api/send/text', json={
+    'sessionId': 'bot',
+    'to': '5511999999999',
+    'text': 'Ola!'
+})
+```
+
+---
+
+## Arquitetura
 
 ```
 whatsapp-api/
-├── server.js              # Express + Socket.IO + WhatsApp
-├── src/public/
-│   └── index.html         # Dashboard futurista
+├── server.js              # Servidor principal (Express + Socket.IO)
+├── src/
+│   └── public/
+│       └── index.html     # Dashboard (Glassmorphism + Neon)
 ├── data/                  # Dados de sessao (gitignored)
+│   └── <session-id>/
+│       └── session/       # Dados do Chrome
 ├── package.json
+├── .gitignore
+├── LICENSE
+├── CONTRIBUTING.md
+├── CHANGELOG.md
 └── README.md
 ```
 
-### Stack
+---
 
-- **Runtime:** Node.js + Express
-- **WhatsApp:** whatsapp-web.js (Chrome via Puppeteer)
-- **Tempo real:** Socket.IO
-- **Frontend:** HTML/CSS/JS puro com glassmorphism
+## Configuracao
 
-## Features
+### Variaveis de Ambiente
 
-| Feature | Status |
-|---------|--------|
-| Multi-sessao | ✅ |
-| QR Code connection | ✅ |
-| Text messages | ✅ |
-| Image messages | ✅ |
-| Video messages | ✅ |
-| Audio messages | ✅ |
-| Location messages | ✅ |
-| Poll messages | ✅ |
-| Contact listing | ✅ |
-| Real-time updates | ✅ |
-| Auto-reconnect | ✅ |
-| LID resolution | ✅ |
-| Futuristic dashboard | ✅ |
+| Variavel | Default | Descricao |
+|----------|---------|-----------|
+| `PORT` | `3000` | Porta do servidor |
+| `CHROME_PATH` | auto | Caminho do Chrome |
+| `DEBUG` | - | Modo debug |
 
-## Common issues
-
-<details><summary><b>"No LID for user" error</b></summary>
-
-O numero pode nao existir no WhatsApp ou estar em formato incorreto. Use `getNumberId()` para resolver:
-
-```javascript
-const id = await client.getNumberId('5511999999999');
-// Retorna: { _serialized: "123456789@lid" }
-```
-
-</details>
-
-<details><summary><b>"Browser already running" error</b></summary>
-
-Mate processos Chrome antigos:
+### Porta personalizada
 
 ```bash
-pkill -9 -f "chrome.*headless"
+PORT=8080 node server.js
 ```
 
-</details>
+---
 
-<details><summary><b>Sessao troca sozinha</b></summary>
+## Contribuicao
 
-O problema era no frontend — o `ls()` reconstruia o dropdown e perdia a selecao. Ja corrigido na versao atual.
+Contribuicoes sao muito bem-vindas! Por favor, leia o [CONTRIBUTING.md](CONTRIBUTING.md) antes de enviar um PR.
 
-</details>
-
-<details><summary><b>QR Code nao conecta</b></summary>
-
-Verifique se o endpoint do WhatsApp funciona:
+### Development
 
 ```bash
-curl -s https://web.whatsapp.com/ws/chat
-# Deve retornar algo, nao 404
+# Clone
+git clone https://github.com/matheus24scc/whatsapp-api.git
+cd whatsapp-api
+
+# Instale
+npm install
+
+# Rode em dev
+node server.js
+
+# Acesse
+http://localhost:3000
 ```
 
-</details>
+---
 
-## Contributing
+## Roadmap
 
-Contribuicoes sao bem-vindas! Abra um issue ou envie um PR.
+- [ ] Webhook para mensagens recebidas
+- [ ] Suporte a group messages
+- [ ] Rate limiting
+- [ ] Autenticacao via API key
+- [ ] Metricas e monitoring
+- [ ] Testes automatizados
+- [ ] Interface de administracao
+- [ ] Suporte a múltiplos numeros por sessao
 
-## License
+---
 
-MIT
+## Known Issues
+
+| Issue | Status | Solucao |
+|-------|--------|---------|
+| QR Code expira rapido | ⚠️ | Recriar sessao |
+| Chrome crash embaixo de RAM | ⚠️ | Usar SWAP |
+| LID resolution falha | ✅ | Atualizado |
+
+---
+
+## Seguranca
+
+Se voce encontrar uma vulnerabilidade, por favor **nao** abra um issue publico. Em vez disso, envie um email para matheus24scc@users.noreply.github.com.
+
+---
+
+## Licenca
+
+Este projeto esta licenciado sob a licenca MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+---
+
+## Agradecimentos
+
+- [whatsapp-web.js](https://github.com/nicedoc/whatsapp-web.js) - Biblioteca principal
+- [Socket.IO](https://socket.io/) - Comunicacao em tempo real
+- [Express](https://expressjs.com/) - Framework HTTP
+- [Puppeteer](https://pptr.dev/) - Automacao do Chrome
+
+---
+
+## Autor
+
+**Matheus Gabriel** - [@matheus24scc](https://github.com/matheus24scc)
+
+Projeto hospedado em [GitHub](https://github.com/matheus24scc/whatsapp-api)
