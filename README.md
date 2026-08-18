@@ -441,3 +441,12 @@ Este projeto esta licenciado sob a licenca MIT - veja o arquivo [LICENSE](LICENS
 **Matheus Gabriel** - [@matheus24scc](https://github.com/matheus24scc)
 
 Projeto hospedado em [GitHub](https://github.com/matheus24scc/whatsapp-api)
+
+## Status (checkup 2026-08-18)
+> Revisado na campanha de repo-checkup. Relatorio completo: `~/repo-checkup/reports/whatsapp-api.md` (local do mantenedor, nao no repo).
+- **Build/Install**: PASS — `npm ci` RC=0 (286 pacotes apos limpeza) e `node --check server.js` RC=0 (JS puro, sem transpilacao).
+- **Smoke test**: server sobe em :3000; `GET /api/sessions` -> 200 `{"success":true,"sessions":[]}`; `GET /api/qrcode/nope` -> 404; `GET /` -> 200 (index estatico).
+- **Para rodar de ponta-a-ponta precisa de**: QR WhatsApp + conta real (acao humana) para sessao conectada; Chrome/puppeteer (`executablePath` hardcoded) para criar sessao.
+- **Inconsistencias conhecidas (README vs codigo)**: `package.json` listava `baileys`, `playwright`, `pino`, `puppeteer-core` nao importados (removidos no checkup); memoria do projeto atribuia erro 515 ao Baileys, mas o codigo usa `whatsapp-web.js`; `executablePath` do puppeteer hardcoded (fragil entre maquinas).
+- **Seguranca**: 5 high transitivas via `extract-zip` (GHSA-jmr9-qjv8-65gv, cadeia puppeteer/whatsapp-web.js); unico fix e `npm audit fix --force` que faz downgrade BREAKING do `whatsapp-web.js` para 1.34.2 -> NAO aplicado (decisao humana). Sem vulns altas remediadas automaticamente.
+- **Estado resumido**: build/install verde + smoke (server sobe, 200/404); conexao WhatsApp real precisa de QR + conta (acao humana); 5 high pendentes.
